@@ -210,18 +210,20 @@ export default function FreeImagesPage() {
               (image.isGif || image.url.toLowerCase().endsWith('.gif')) ? (
                 <img
                   key={image.id}
-                  src={image.url} // [핵심] 최적화 옵션을 다 빼고 원본을 써야 무한 루핑됩니다.
+                  src={image.url} // GIF는 원본 URL 사용 (API에서 이미 처리됨)
                   alt={image.name}
+                  loading="lazy"
                   className="h-32 lg:h-48 w-auto flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
                   onClick={() => setSelectedImage(image)}
                 />
               ) : (
                 <Image
                   key={image.id}
-                  src={image.url.replace('/upload/', '/upload/f_auto,q_auto/')}
+                  src={image.url} // API에서 f_auto,q_auto가 이미 적용됨
                   alt={image.name}
                   width={400}
                   height={400}
+                  loading="lazy"
                   className="h-32 lg:h-48 w-auto flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
                   onClick={() => setSelectedImage(image)}
                 />
