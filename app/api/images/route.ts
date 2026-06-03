@@ -42,9 +42,16 @@ export async function GET() {
         flags: "attachment",
       })
 
-      // For GIFs, use secure_url directly (no transformations)
-      // This ensures the animated GIF plays correctly
-      const displayUrl = isGif ? resource.secure_url : resource.secure_url
+      // For GIFs, use secure_url directly (no transformations) to preserve animation
+      // For other images, apply f_auto,q_auto for optimal format and quality
+      const displayUrl = isGif 
+        ? resource.secure_url 
+        : cloudinary.url(resource.public_id, {
+            secure: true,
+            resource_type: "image",
+            fetch_format: "auto",
+            quality: "auto",
+          })
 
       return {
         id: resource.public_id,
